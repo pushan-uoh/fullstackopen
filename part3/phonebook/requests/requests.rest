@@ -1,0 +1,48 @@
+### 3.1 Get all persons
+GET http://localhost:3001/api/persons
+
+### 3.2 Get info
+GET http://localhost:3001/info
+
+### 3.3 Get single person (valid ID)
+GET http://localhost:3001/api/persons/1
+
+### 3.3 Get single person (non-existing ID)
+GET http://localhost:3001/api/persons/999
+
+### 3.4 Delete a person
+DELETE http://localhost:3001/api/persons/2
+
+### 3.5 Create a new person
+POST http://localhost:3001/api/persons
+Content-Type: application/json
+
+{
+  "name": "Grace Hopper",
+  "number": "123-456789"
+}
+
+### 3.6 Create person error (missing name)
+POST http://localhost:3001/api/persons
+Content-Type: application/json
+
+{
+  "number": "123-456789"
+}
+
+### 3.6 Create person error (missing number)
+POST http://localhost:3001/api/persons
+Content-Type: application/json
+
+{
+  "name": "Grace Hopper"
+}
+
+### 3.6 Create person error (name must be unique)
+POST http://localhost:3001/api/persons
+Content-Type: application/json
+
+{
+  "name": "Arto Hellas",
+  "number": "040-999999"
+}
