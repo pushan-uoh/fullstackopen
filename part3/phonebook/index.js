@@ -59,14 +59,14 @@ app.post('/api/persons', (request, response, next) => {
   const body = request.body
 
   if (!body.name) {
-    return response.status(400).json({ 
-      error: 'name missing' 
+    return response.status(400).json({
+      error: 'name missing'
     })
   }
 
   if (!body.number) {
-    return response.status(400).json({ 
-      error: 'number missing' 
+    return response.status(400).json({
+      error: 'number missing'
     })
   }
 
