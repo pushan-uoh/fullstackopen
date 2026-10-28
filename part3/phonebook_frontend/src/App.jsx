@@ -65,12 +65,16 @@ const App = () => {
             setNewNumber('')
             showNotification(`Updated ${returnedPerson.name}'s number`)
           })
-          .catch(() => {
-            showNotification(
-              `Information of '${existingPerson.name}' has already been removed from server`,
-              'error',
-            )
-            setPersons(persons.filter((p) => p.id !== existingPerson.id))
+          .catch((error) => {
+            if (error.response?.data?.error) {
+              showNotification(error.response.data.error, 'error')
+            } else {
+              showNotification(
+                `Information of '${existingPerson.name}' has already been removed from server`,
+                'error',
+              )
+              setPersons(persons.filter((p) => p.id !== existingPerson.id))
+            }
           })
       }
       return
@@ -81,12 +85,17 @@ const App = () => {
       number: newNumber,
     }
 
-    personService.create(newPerson).then((returnedPerson) => {
-      setPersons(persons.concat(returnedPerson))
-      setNewName('')
-      setNewNumber('')
-      showNotification(`Added ${returnedPerson.name}`)
-    })
+    personService
+      .create(newPerson)
+      .then((returnedPerson) => {
+        setPersons(persons.concat(returnedPerson))
+        setNewName('')
+        setNewNumber('')
+        showNotification(`Added ${returnedPerson.name}`)
+      })
+      .catch((error) => {
+        showNotification(error.response?.data?.error || 'Failed to add person', 'error')
+      })
   }
 
   const deletePerson = (id, name) => {

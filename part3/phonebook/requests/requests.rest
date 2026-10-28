@@ -49,3 +49,31 @@ Content-Type: application/json
 {
   "name": "Linus Torvalds"
 }
+
+### Error handling: Create person error (name shorter than 3 characters)
+POST http://localhost:3001/api/persons
+Content-Type: application/json
+
+{
+  "name": "Bo",
+  "number": "040-22334455"
+}
+
+### Error handling: Create person error (phone number shorter than 8 digits)
+POST http://localhost:3001/api/persons
+Content-Type: application/json
+
+{
+  "name": "Ada Lovelace",
+  "number": "1234556"
+}
+
+### Error handling: Create person error (invalid phone number format)
+POST http://localhost:3001/api/persons
+Content-Type: application/json
+
+{
+  "name": "Ada Lovelace",
+  "number": "10-22-334455"
+}
+
