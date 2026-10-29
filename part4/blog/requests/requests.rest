@@ -1,24 +1,36 @@
-### 4.1 Get all blogs
+### Get all blogs
 GET http://localhost:3003/api/blogs
 
-### 4.1 Create a new blog
-POST http://localhost:3003/api/blogs
+### Create user 1
+POST http://localhost:3003/api/users
 Content-Type: application/json
 
 {
-  "title": "React patterns",
-  "author": "Michael Chan",
-  "url": "https://reactpatterns.com/",
-  "likes": 7
+  "username": "root",
+  "name": "Superuser",
+  "password": "secretpassword"
 }
 
-### 4.1 Create another blog
-POST http://localhost:3003/api/blogs
+### Get all users
+GET http://localhost:3003/api/users
+
+### Login
+POST http://localhost:3003/api/login
 Content-Type: application/json
 
 {
-  "title": "Go To Statement Considered Harmful",
-  "author": "Edsger W. Dijkstra",
-  "url": "http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html",
-  "likes": 5
+  "username": "root",
+  "password": "secretpassword"
+}
+
+### Create blog with token (replace YOUR_TOKEN_HERE)
+POST http://localhost:3003/api/blogs
+Content-Type: application/json
+Authorization: Bearer YOUR_TOKEN_HERE
+
+{
+  "title": "Type wars",
+  "author": "Robert C. Martin",
+  "url": "http://blog.cleancoder.com/uncle-bob/2016/05/01/TypeWars.html",
+  "likes": 2
 }
