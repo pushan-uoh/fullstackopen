@@ -107,6 +107,62 @@ describe('addition of a new blog', () => {
   })
 })
 
+describe('deletion of a blog', () => {
+  test('succeeds with status code 204 if id is valid', async () => {
+    const blogsAtStart = await helper.blogsInDb()
+    const blogToDelete = blogsAtStart[0]
+
+    await api
+      .delete(`/api/blogs/${blogToDelete.id}`)
+      .expect(204)
+
+    const blogsAtEnd = await helper.blogsInDb()
+    assert.strictEqual(blogsAtEnd.length, helper.initialBlogs.length - 1)
+
+    const ids = blogsAtEnd.map((b) => b.id)
+    assert.ok(!ids.includes(blogToDelete.id))
+  })
+})
+
+describe('updating a blog', () => {
+  test('succeeds with status code 200 when updating likes', async () => {
+    const blogsAtStart = await helper.blogsInDb()
+    const blogToUpdate = blogsAtStart[0]
+
+    const updatedData = {
+      ...blogToUpdate,
+      likes: blogToUpdate.likes + 10,
+    }
+
+    const response = await api
+      .put(`/api/blogs/${blogToUpdate.id}`)
+      .send(updatedData)
+      .expect(200)
+      .expect('Content-Type', /application\/json/)
+
+    assert.strictEqual(response.body.likes, blogToUpdate.likes + 10)
+
+    const blogsAtEnd = await helper.blogsInDb()
+    const updatedBlogInDb = blogsAtEnd.find((b) => b.id === blogToUpdate.id)
+    assert.strictEqual(updatedBlogInDb.likes, blogToUpdate.likes + 10)
+  })
+
+  test('fails with status code 404 if blog does not exist', async () => {
+    const nonExistingId = await helper.nonExistingId()
+    const updateData = {
+      title: 'Non-existing Blog',
+      author: 'Ghost Writer',
+      url: 'http://ghost.com',
+      likes: 1,
+    }
+
+    await api
+      .put(`/api/blogs/${nonExistingId}`)
+      .send(updateData)
+      .expect(404)
+  })
+})
+
 after(async () => {
   await mongoose.connection.close()
 })
